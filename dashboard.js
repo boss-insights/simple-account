@@ -20,7 +20,7 @@ $(document).ready(function () {
                 app: 'company/integrations',
                 icon: 'widgets',
                 hint: 'Please connect your *business* applications and accounts to complete your application. This will only allow us to read your data without any write permission. If you do not use cloud based accounting systems there is an excel form you can fill in on the Upload Files step',
-                options: {tags: 'accounting'} // ,banking
+                options: {tags: 'accounting'}
             },
             {
                 name: 'Upload Files',
@@ -73,22 +73,13 @@ $(document).ready(function () {
 
                 var i,g,len;
                 var infoStatementsFieldValues = [];
-                //var metricsRatiosFieldValues = [];
                 var infoStatements = data.data['info-statements'] || [];
-                //var metricsRatios = data.data['metrics-ratios'];
                 var workflowState = data.data['__state'] || '';
-                //console.log(workflowState);
 
                 for (i = 0, len = data.fields.length; i < len; i++) {
                     if(data.fields[i].name === 'info-statements'){
                         infoStatementsFieldValues = data.fields[i].values;
                     }
-                    /*
-                    if(data.fields[i].name === 'metrics-ratios'){
-                        metricsRatiosFieldValues = data.fields[i].values;
-                    }
-
-                     */
                 }
 
                 /* requirements have a name, status, set of actions to take, whether they are fulfilled (and by which source)  */
@@ -165,23 +156,9 @@ $(document).ready(function () {
                                     requirements.push({title: infoStatementsFieldValues[g].title, value: infoStatementsFieldValues[g].value});
                                     break;
                             }
-
-                            /*
-                                      {value: 'profit_loss', title: 'Profit and Loss'},
-          {value: 'balance_sheet',title: 'Balance Sheet'},
-          {value: 'cash_flow', title:'Cash Flow Statement'},
-          {value: 'bank_balances',title: 'Bank Balances and Transactions'},
-
-
-          {value: 'prepared_financials',title: 'Prepared Financial Statements'},
-
-                             */
-
-
                         }
                     }
                 }
-                //console.log(requirements);
                 // fetch and update the status of each well-known requirement
                 $.ajax('/apps/company/requirements.php', {
                     type: 'POST',
@@ -204,8 +181,6 @@ $(document).ready(function () {
                         myIntranetApps.dashboard.renderCustomWelcome({'requirements':requirements});
                     }
                 });
-
-
             }
         });
     }
