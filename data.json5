@@ -12,8 +12,6 @@
         values: [
           {value: 'profit_loss', title: 'Profit and Loss'},
           {value: 'balance_sheet',title: 'Balance Sheet'},
-          /*{value: 'cash_flow', title:'Cash Flow Statement'},
-          {value: 'bank_balances',title: 'Bank Balances and Transactions'},*/
           {value: 'bank_transfer',title: 'Banking Transfer Information'},
           {value: 'irs_1120',title: 'IRS Business Tax Form 1120'},
           {value: 'cra_t2',title: 'CRA T2 Corporation Income Tax Return'},
@@ -30,29 +28,6 @@
           readHide: true
         }
       },
-      /*{
-        name: 'metrics-ratios',
-        title: 'Metrics / Ratios',
-        type: 'select',
-        multiple: true,
-        values: [
-          {value: 'financial-ratios', title: 'Financial Ratios (A/R, Gross Margin, Net Margin'},
-          {value: 'debt-ratios',title: 'Debt Ratios - DSCR, LTV'},
-          {value: 'sales-forecast', title:'Sales & Forecast'},
-
-          {value: 'ar-performance',title: 'A/R Performance'}
-        ],
-        access: {
-          read: [
-            'users'
-          ],
-          modify: [
-            'parent:::admins'
-          ],
-          readHide: true
-        }
-      },*/
-
       {
         name: 'company-legal-name',
         title: 'Company Legal Name',
@@ -192,20 +167,6 @@
           contains: {field: 'info-statements', value: 'notice_of_assessment'}
         }
       },
-      /*
-      {
-        name: 'address',
-        title: 'Physical Address',
-        type: 'address',
-        access: {
-          read: [
-            'admins','underwriters','borrowers'
-          ],
-          modify: [
-            'admins','underwriters','borrowers'
-          ]
-        }
-      },*/
 
       /* BANK INFO START */
       {
@@ -494,19 +455,10 @@
       },
       /* FINANCIAL STATEMENTS END */
 
-
-
     ]
   },
 
   forms: {
-    /*
-    requirements: {
-      title: 'Required Information',
-      fields: [
-        {name: 'test-field'}
-      ]
-    },*/
     submit: {
       title: 'Submit Information',
       workflow_state: 'submitted',
@@ -606,7 +558,6 @@
       {name: 'company-legal-name', type: 'text', title: 'Company'},
       {name: 'business-number', type: 'text', title: 'Number'},
       {name: 'primary-contact', type: 'email', title: 'Contact'},
-      /*{name: '@months_liquidity', type: 'text', title: 'Liquidity'}*/
 
     ]
   },
@@ -668,20 +619,7 @@
           {value: 'articles_of_incorporation', title: 'Articles of Incorporation'},
 
         ],
-      }/*,
-      {
-        name: 'metrics-ratios',
-        title: 'Metrics/Ratios/Analytics',
-        type: 'select',
-        multiple: true,
-        values: [
-          {value: 'financial-ratios', title: 'Financial Ratios (A/R, Gross Margin, Net Margin'},
-          {value: 'debt-ratios',title: 'Debt Ratios - DSCR, LTV'},
-          {value: 'sales-forecast', title:'Sales & Forecast'},
-          {value: 'ar-performance',title: 'A/R Performance'}
-        ],
-      }*/
-
+      }
     ],
     status: [
       // Pending workflow status
@@ -698,11 +636,4 @@
         title: 'Joined'
       }
     ]
-  },
-
-  chart_of_accounts: {
-    mapping: [
-      {'name': '', type:  ''}
-    ]
   }
-}
