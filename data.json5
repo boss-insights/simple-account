@@ -1,0 +1,708 @@
+/* Bright Lend Configuration */
+{
+  profile: {
+    title: 'Information',
+    fields: [
+      {
+        name: 'info-statements',
+        title: 'Information / Statements',
+        type: 'select',
+        typeDisplay: 'full',
+        multiple: true,
+        values: [
+          {value: 'profit_loss', title: 'Profit and Loss'},
+          {value: 'balance_sheet',title: 'Balance Sheet'},
+          /*{value: 'cash_flow', title:'Cash Flow Statement'},
+          {value: 'bank_balances',title: 'Bank Balances and Transactions'},*/
+          {value: 'bank_transfer',title: 'Banking Transfer Information'},
+          {value: 'irs_1120',title: 'IRS Business Tax Form 1120'},
+          {value: 'cra_t2',title: 'CRA T2 Corporation Income Tax Return'},
+          {value: 'prepared_financials',title: 'Prepared Financial Statements'},
+          {value: 'cash_flow_forecast', title: 'Cash Flow Forecast'}
+        ],
+        access: {
+          read: [
+            'users'
+          ],
+          modify: [
+            'parent:::admins'
+          ],
+          readHide: true
+        }
+      },
+      /*{
+        name: 'metrics-ratios',
+        title: 'Metrics / Ratios',
+        type: 'select',
+        multiple: true,
+        values: [
+          {value: 'financial-ratios', title: 'Financial Ratios (A/R, Gross Margin, Net Margin'},
+          {value: 'debt-ratios',title: 'Debt Ratios - DSCR, LTV'},
+          {value: 'sales-forecast', title:'Sales & Forecast'},
+
+          {value: 'ar-performance',title: 'A/R Performance'}
+        ],
+        access: {
+          read: [
+            'users'
+          ],
+          modify: [
+            'parent:::admins'
+          ],
+          readHide: true
+        }
+      },*/
+
+      {
+        name: 'company-legal-name',
+        title: 'Company Legal Name',
+        // description: 'Should match any incorporation documents',
+        type: 'text',
+        sync: {
+          push: false,
+          pull: false,
+          entity: 'accounts',
+          field: 'Account_Name'
+        },
+        access: {
+          read: [
+            'admins','underwriters','borrowers'
+          ],
+          modify: [
+            'admins'
+          ]
+        }
+      },
+      {
+        name: 'website',
+        title: 'Website',
+        type: 'url',
+        sync: {
+          push: false,
+          pull: false,
+          entity: 'accounts',
+          field: 'Website'
+        },
+        access: {
+          read: [
+            'admins','underwriters','borrowers'
+          ],
+          modify: [
+            'admins','underwriters','borrowers'
+          ]
+        }
+      },
+      {
+        name: 'business-number',
+        title: 'CRA Business Number',
+        type: 'number',
+        access: {
+          read: [
+            'admins','underwriters','borrowers'
+          ],
+          modify: [
+            'admins','underwriters','borrowers'
+          ]
+        }
+      },
+      {
+        name: 'certificate-of-incorporation',
+        title: 'Certificate of Incorporation',
+        type: 'file',
+        accept: '.pdf',
+        access: {
+          read: [
+            'admins','underwriters','borrowers'
+          ],
+          modify: [
+            'admins','underwriters','borrowers'
+          ]
+        },
+        visibility: {
+          contains: {field: 'info-statements', value: 'certificate_of_incorporation'}
+        }
+      },
+      {
+        name: 'articles-of-incorporation',
+        title: 'Articles of Incorporation',
+        type: 'file',
+        accept: '.pdf',
+        access: {
+          read: [
+            'admins','underwriters','borrowers'
+          ],
+          modify: [
+            'admins','underwriters','borrowers'
+          ]
+        },
+        visibility: {
+          contains: {field: 'info-statements', value: 'articles_of_incorporation'}
+        }
+      },
+      {
+        name: 'bank-statements',
+        title: 'Bank Statements (previous 2 months)',
+        type: 'file',
+        accept: '.pdf',
+        multiple: true,
+        access: {
+          read: [
+            'admins','underwriters','borrowers'
+          ],
+          modify: [
+            'admins','underwriters','borrowers'
+          ]
+        },
+        visibility: {
+          contains: {field: 'info-statements', value: 'bank_statements'}
+        }
+      },
+      {
+        name: 'cra-pd7a',
+        title: 'PD7A Statement of Account for Source Deductions',
+        type: 'file',
+        accept: '.pdf',
+        access: {
+          read: [
+            'admins','underwriters','borrowers'
+          ],
+          modify: [
+            'admins','underwriters','borrowers'
+          ]
+        },
+        visibility: {
+          contains: {field: 'info-statements', value: 'cra_pd7a'}
+        }
+      },
+      {
+        name: 'notice-of-assessment',
+        title: 'Notice of Assessment (previous 2 years)',
+        type: 'file',
+        accept: '.pdf',
+        multiple: true,
+        access: {
+          read: [
+            'admins','underwriters','borrowers'
+          ],
+          modify: [
+            'admins','underwriters','borrowers'
+          ]
+        },
+        visibility: {
+          contains: {field: 'info-statements', value: 'notice_of_assessment'}
+        }
+      },
+      /*
+      {
+        name: 'address',
+        title: 'Physical Address',
+        type: 'address',
+        access: {
+          read: [
+            'admins','underwriters','borrowers'
+          ],
+          modify: [
+            'admins','underwriters','borrowers'
+          ]
+        }
+      },*/
+
+      /* BANK INFO START */
+      {
+        name:'div-bank',
+        title:'Banking Information',
+        type: 'divider',
+        visibility: {
+          contains: {field: 'info-statements', value: 'bank_transfer'}
+        }
+      },
+      {
+        name: 'bank-name',
+        title: 'Bank Name',
+        type: 'text',
+        access: {
+          read: [
+            'admins','underwriters','borrowers'
+          ],
+          modify: [
+            'admins','underwriters','borrowers'
+          ]
+        },
+        visibility: {
+          contains: {field: 'info-statements', value: 'bank_transfer'}
+        }
+      },
+      {
+        name: 'branch-address-street',
+        title: 'Street Address',
+        type: 'text',
+        access: {
+          read: [
+            'admins','underwriters','borrowers'
+          ],
+          modify: [
+            'admins','underwriters','borrowers'
+          ]
+        },
+        visibility: {
+          contains: {field: 'info-statements', value: 'bank_transfer'}
+        }
+      },
+      {
+        name: 'branch-address-city',
+        title: 'City',
+        type: 'text',
+        access: {
+          read: [
+            'admins','underwriters','borrowers'
+          ],
+          modify: [
+            'admins','underwriters','borrowers'
+          ]
+        },
+        visibility: {
+          contains: {field: 'info-statements', value: 'bank_transfer'}
+        }
+      },
+      {
+        name: 'branch-address-postcode',
+        title: 'Postal Code',
+        type: 'text',
+        access: {
+          read: [
+            'admins','underwriters','borrowers'
+          ],
+          modify: [
+            'admins','underwriters','borrowers'
+          ]
+        },
+        visibility: {
+          contains: {field: 'info-statements', value: 'bank_transfer'}
+        }
+      },
+      {
+        name: 'branch-address-country',
+        title: 'Country',
+        type: 'text',
+        access: {
+          read: [
+            'admins','underwriters','borrowers'
+          ],
+          modify: [
+            'admins','underwriters','borrowers'
+          ]
+        },
+        visibility: {
+          contains: {field: 'info-statements', value: 'bank_transfer'}
+        }
+      },
+      {
+        name: 'institution-number',
+        title: 'Institution Number',
+        type: 'number',
+        access: {
+          read: [
+            'admins','underwriters','borrowers'
+          ],
+          modify: [
+            'admins','underwriters','borrowers'
+          ]
+        },
+        visibility: {
+          contains: {field: 'info-statements', value: 'bank_transfer'}
+        }
+      },
+      {
+        name: 'transit-number',
+        title: 'Transit Number',
+        type: 'number',
+        access: {
+          read: [
+            'admins','underwriters','borrowers'
+          ],
+          modify: [
+            'admins','underwriters','borrowers'
+          ]
+        },
+        visibility: {
+          contains: {field: 'info-statements', value: 'bank_transfer'}
+        }
+      },
+      {
+        name: 'account-number',
+        title: 'Account Number',
+        type: 'number',
+        access: {
+          read: [
+            'admins','underwriters','borrowers'
+          ],
+          modify: [
+            'admins','underwriters','borrowers'
+          ]
+        },
+        visibility: {
+          contains: {field: 'info-statements', value: 'bank_transfer'}
+        }
+      },
+      /* BANK INFO END */
+
+      /* TAX FORMS START*/
+      {
+        name:'div-tax',
+        title:'Tax Returns',
+        type:'divider',
+        visibility: {
+          contains: {field: 'info-statements', value: 'cra_t2,irs_1120'}
+        }
+      },
+      {
+        name: 'cra_t2',
+        title: 'CRA T2 Corporation Income Tax Return',
+        type: 'file',
+        accept: '.pdf',
+        multiple: true,
+        access: {
+          read: [
+            'admins','underwriters','borrowers'
+          ],
+          modify: [
+            'admins','underwriters','borrowers'
+          ]
+        },
+        visibility: {
+          contains: {field: 'info-statements', value: 'cra_t2'}
+        }
+      },
+      {
+        name: 'irs_1120',
+        title: 'IRS Business Tax Form 1120',
+        type: 'file',
+        accept: '.pdf',
+        multiple: true,
+        access: {
+          read: [
+            'admins','underwriters','borrowers'
+          ],
+          modify: [
+            'admins','underwriters','borrowers'
+          ]
+        },
+        visibility: {
+          contains: {field: 'info-statements', value: 'irs_1120'}
+        }
+      },
+
+      /* TAX FORMS END */
+
+
+      /* CASHFLOW FORECAST START */
+      {
+        name:'div-cash-flow',
+        title:'Cash Flow Forecast',
+        type:'divider',
+        visibility: {
+          contains: {field: 'info-statements', value: 'cash_flow_forecast'}
+        }
+      },
+      {
+        name: 'cashflow-forecast',
+        title: '12 month forecast Excel/CSV file',
+        type: 'file',
+        accept: '.xls,.xlsx,.csv',
+        access: {
+          read: [
+            'admins','underwriters','borrowers'
+          ],
+          modify: [
+            'admins','underwriters','borrowers'
+          ]
+        },
+        visibility: {
+          contains: {field: 'info-statements', value: 'cash_flow_forecast'}
+        }
+      },
+      {
+        name: 'forecast-justification',
+        title: 'Notes and Justification',
+        type: 'textarea',
+        access: {
+          read: [
+            'admins','underwriters','borrowers'
+          ],
+          modify: [
+            'admins','underwriters','borrowers'
+          ]
+        },
+        visibility: {
+          contains: {field: 'info-statements', value: 'cash_flow_forecast'}
+        }
+      },
+
+      /* CASHFLOW FORECAST END */
+
+      /* FINANCIAL STATEMENTS START */
+      {
+        name:'div-fs1',
+        title:'Accountant Prepared Financial Statements',
+        type:'divider',
+        visibility: {
+          contains: {field: 'info-statements', value: 'prepared_financials'}
+        }
+      },
+      {
+        name: 'financial-statements',
+        title: 'Financial Statement',
+        type: 'fieldset',
+        multiple: true,
+        fields: [
+          {
+            name: 'fs-upload',
+            title: 'File upload',
+            type: 'file',
+            accept: '.pdf',
+            multiple: false
+          },
+          {
+            name: 'fs-year',
+            title: 'Year',
+            type: 'number',
+            attributes: {min: '2010',max: '2050'}
+          },
+
+          {
+            name: 'fs-name',
+            title: 'Accountant Name',
+            type: 'text'
+          },
+          {
+            name: 'fs-email',
+            title: 'Accountant Email',
+            type: 'email'
+          }
+        ],
+        access: {
+          read: [
+            'admins','underwriters','borrowers'
+          ],
+          modify: [
+            'admins','underwriters','borrowers'
+          ]
+        },
+        visibility: {
+          contains: {field: 'info-statements', value: 'prepared_financials'}
+        }
+      },
+      /* FINANCIAL STATEMENTS END */
+
+
+
+    ]
+  },
+
+  forms: {
+    /*
+    requirements: {
+      title: 'Required Information',
+      fields: [
+        {name: 'test-field'}
+      ]
+    },*/
+    submit: {
+      title: 'Submit Information',
+      workflow_state: 'submitted',
+      fields: [
+        /* ATTESTATION START */
+        {
+          name: 'salut-div',
+          title: 'Confirmation',
+          type: 'divider'
+        },
+        {
+          name: 'sign-name',
+          title: 'Your Name',
+          type: 'text',
+          access: {
+            read: [
+              'admins',
+              'underwriters',
+              'borrowers'
+            ],
+            modify: [
+              'admins',
+              'underwriters',
+              'borrowers'
+            ]
+          }
+        },
+        {
+          name: 'sign-title',
+          title: 'Your Title/Role',
+          type: 'text',
+          access: {
+            read: [
+              'admins',
+              'underwriters',
+              'borrowers'
+            ],
+            modify: [
+              'admins',
+              'underwriters',
+              'borrowers'
+            ]
+          }
+        },
+        {
+          name: 'information-attestation',
+          title: 'I have completed all sections and certify the information is correct',
+          description: 'Please type your full name to certify',
+          type: 'signature',
+          access: {
+            read: [
+              'admins',
+              'underwriters',
+              'borrowers'
+            ],
+            modify: [
+              'admins',
+              'underwriters',
+              'borrowers'
+            ]
+          }
+        }
+
+        /* ATTESTATION END */
+      ]
+    }
+  },
+
+  portfolio: {
+    owners: [
+      'admins',
+      'underwriters'
+    ],
+    permissions: [
+      {
+        groups: [
+          'admins'
+        ],
+        access: {
+          view: 'all',
+          edit: true,
+          add: true
+        }
+      },
+      {
+        groups: [
+          'underwriters'
+        ],
+        access: {
+          view: 'own',
+          add: true
+        }
+      }
+    ],
+    fields: [
+
+      {name: 'company-legal-name', type: 'text', title: 'Company'},
+      {name: 'business-number', type: 'text', title: 'Number'},
+      {name: 'primary-contact', type: 'email', title: 'Contact'},
+      /*{name: '@months_liquidity', type: 'text', title: 'Liquidity'}*/
+
+    ]
+  },
+  invitations: {
+    uniqueJoinField: 'company-legal-name',
+    owners: [
+      'admins',
+      'underwriters'
+    ],
+    permissions: [
+      {
+        groups: [
+          'admins'
+        ],
+        access: {
+          view: 'all',
+          add: true
+        }
+      },
+      {
+        groups: [
+          'underwriters'
+        ],
+        access: {
+          view: 'own',
+          add: true
+        }
+      }
+    ],
+    fields: [
+
+      {name: 'company-legal-name', type: 'text', title: 'Company Legal Name (optional)' , description: 'Needed if inviting one person to manage multiple companies', 'sync': {field: 'Account_Name'}},
+      {
+        name: 'div-biz-info',
+        title: 'Requested Business Information',
+        type: 'divider',
+        description: 'Select the documents and data you would like your client to provide',
+      },
+      {
+        name: 'info-statements',
+        title: 'Information / Statements',
+        type: 'select',
+        typeDisplay: 'full',
+        multiple: true,
+        values: [
+          {value: 'profit_loss', title: 'Profit and Loss (YTD)'},
+          {value: 'balance_sheet',title: 'Balance Sheet (YTD)'},
+          /*{value: 'cash_flow', title:'Cash Flow Statement'},
+          {value: 'bank_balances',title: 'Bank Balances and Transactions'},*/
+          {value: 'bank_transfer',title: 'Banking Transfer Information'},
+          {value: 'irs_1120',title: 'IRS Business Tax Form 1120'},
+          {value: 'cra_t2',title: 'CRA T2 Corporation Income Tax Return'},
+          {value: 'prepared_financials',title: 'Accountant Prepared Financial Statements'},
+          {value: 'cash_flow_forecast', title: 'Cash Flow Forecast'},
+          {value: 'notice_of_assessment', title: 'Notice of Assessment (previous 2 years)'}, // previous 2 years
+          {value: 'cra_pd7a', title: 'PD7A Statement of Account for Source Deductions'},
+          {value: 'bank_statements', title: 'Bank Statements (previous 2 months)'}, // from last 2 months
+          {value: 'certificate_of_incorporation', title: 'Certificate of Incorporation'},
+          {value: 'articles_of_incorporation', title: 'Articles of Incorporation'},
+
+        ],
+      }/*,
+      {
+        name: 'metrics-ratios',
+        title: 'Metrics/Ratios/Analytics',
+        type: 'select',
+        multiple: true,
+        values: [
+          {value: 'financial-ratios', title: 'Financial Ratios (A/R, Gross Margin, Net Margin'},
+          {value: 'debt-ratios',title: 'Debt Ratios - DSCR, LTV'},
+          {value: 'sales-forecast', title:'Sales & Forecast'},
+          {value: 'ar-performance',title: 'A/R Performance'}
+        ],
+      }*/
+
+    ],
+    status: [
+      // Pending workflow status
+      {
+        value: 'new',
+        title: 'New'
+      },
+      {
+        value: 'invited',
+        title: 'Invited'
+      },
+      {
+        value: 'joined',
+        title: 'Joined'
+      }
+    ]
+  },
+
+  chart_of_accounts: {
+    mapping: [
+      {'name': '', type:  ''}
+    ]
+  }
+}

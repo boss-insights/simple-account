@@ -1,0 +1,75 @@
+/* START: lender specific styles */
+/* Hamburguer menu color */
+i.zmdi.zmdi-menu {color: #333;}
+body.account-type-reseller header.header, body.account-type-reseller div.logo{background-color: #092243 !important; color:#fff !important;}
+body.account-type-reseller aside.sidebar{border-right: 1px solid #eee; background-color: #efefef;}
+body.account-type-reseller .top-nav > li > a{color:#ccc;}
+body.account-type-reseller body[data-sa-theme="13"] .navigation li:not(.navigation__active):not(.navigation__sub--active) a{color:#333;}
+/* END: lender specific styles */
+
+
+a.frameContentItem.workflowItem, a#navWelcome { display: flex; align-items: center; padding-left: 0.65rem;}
+aside.sidebar{background-color: #fff !important; color: #333 !important;}
+aside.sidebar ul li a{color: #000 !important;}
+#appTitle{display: none !important;}
+
+#integrationsCard .app-shortcuts__item > i{border-radius: 100px; height: 130px; line-height: 130px;}
+#snapshotButton, #insightAccountsCombo{ color: #333; border:1px solid #999;}
+
+body.account-type-standard aside.sidebar ul#dashboardNav li a i{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 5px solid #E9E9E9;
+    border-radius: 25px;
+    width: 40px;
+    height: 40px;
+    line-height: 30px;
+    background-color: #D9D9D9;
+    color:#333;
+}
+body.account-type-standard aside.sidebar ul#dashboardNav li a:hover i , body.account-type-standard aside.sidebar ul#dashboardNav li.navigation__active a i{
+    background-color: #4F98D5;
+    border-color:#5FA8E5;
+    color:#fff;
+}
+
+
+
+.requirementsList tbody tr:nth-child(odd) {
+    background-color: #f4f4f4;
+}
+
+
+
+/* START: borrower specific styles */
+body.account-type-standard header.header, body.account-type-standard div.logo{background-color: #092243 !important; color:#333 !important;}
+body.account-type-standard .top-nav > li > a{color:#ccc;}
+body.account-type-standard #workflowMenu{display: none !important;}
+body.account-type-standard aside.sidebar ul#dashboardNav li a span{font-size: 1.1em;}
+
+body.account-type-standard aside.sidebar ul#dashboardNav li {
+    position:relative; /* so that pseudoelements are positioned relatively to their "li"s*/
+    /* use padding-bottom instead of margin-bottom.*/
+    margin-bottom: 0; /* This overrides previously specified margin-bottom */
+    padding-bottom: 2.5em;
+}
+body.account-type-standard aside.sidebar ul#dashboardNav li:before {
+    /* lines */
+    content:"";
+    position: absolute;
+    left: 32px; /* adjust manually */
+    border-left: 2px solid #787878;
+    height: 100%;
+    width: 1px;
+}
+body.account-type-standard aside.sidebar ul#dashboardNav li:first-child:before {
+    /* first li's line */
+    top: 16px; /* moves the line down so that it disappears under the bullet. Adjust manually */
+}
+
+body.account-type-standard aside.sidebar ul#dashboardNav li:last-child:before {
+    /* last li's line */
+    height: 16px; /* shorten the line so it goes only up to the bullet. Is equal to first-child:before's top */
+}
+/* END: borrower specific styles */
