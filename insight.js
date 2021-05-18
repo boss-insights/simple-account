@@ -9,22 +9,6 @@
 
 $(document).ready(function () {
 
-    /*
-    var newsContent = ' <div class="card">\n' +
-        '                                    <div class="card-body">\n' +
-        '                                        <h4 class="card-title">News Search</h4>\n' +
-        '                                        <h6 class="card-subtitle">articles mentioning or related to the company</h6>\n' +
-        '                                        <p>\n' +
-        '                                            <ul class="news-search-list" id="news">\n' +
-        '\n' +
-        '                                            </ul>\n' +
-        '                                        </p>\n' +
-        '                                    </div>\n' +
-        '\n' +
-        '                                </div>';
-    $('#zone-left').append(newsContent);*/
-
-
     // fetch data for each panel
     myIntranetApps.fetchData({item: 'profile'}, function (data) {
 
@@ -53,38 +37,7 @@ $(document).ready(function () {
                 cash_flow_forecast_file: profile.cashflow_forecast.file
             });
 
-
-
             $('#zone-left').append(content);
-
-
-
-            /*
-                        if (typeof data.profile.website !== 'undefined' && data.profile.website !== null && data.profile.website.length > 0) {
-                            var url = myIntranetApps.parseURL(data.profile.website);
-                            var feed = "/news.php?q=" + url.host;
-
-                            $.ajax(feed, {
-                                contentType:"text/xml",
-                                dataType: "xml",
-                                type:"POST",
-                                success: function (data) {
-                                    var itemCounter = 0;
-
-                                    $(data).find("item").each(function () { // or "item" or whatever suits your feed
-                                        var el = $(this);
-                                        var pubDate = moment(el.find("pubDate").text());
-                                        $('#news').append('<li><a target="_blank" href="' + el.find("link").text() + '">' + el.find("title").text() + '</a> - '+pubDate.format('Do MMM YYYY')+'</li>');
-                                        itemCounter++;
-                                        if (itemCounter >= 10) {
-                                            return false;
-                                        }
-                                    });
-                                }
-                            });
-                        } else {
-                            $('#news').html('no data available');
-                        }*/
         }
     });
 
@@ -121,254 +74,6 @@ $(document).ready(function () {
         '\n' +
         '                                </div>';
     $('#zone-left').append(snapshotContent);
-
-
-    /*
-    myIntranetApps.fetchData({item: 'balance-sheet'}, function (data) {
-
-        var refreshBalanceSheet = function(forceRefresh){
-            var newBalanceSheetDate = $('#asOfBalanceSheet').periodpicker('value');
-            if(typeof newBalanceSheetDate[0] == 'object') {
-                var newAsOf = newBalanceSheetDate[0].getUTCFullYear() + '-' + (newBalanceSheetDate[0].getUTCMonth() + 1) + '-' + newBalanceSheetDate[0].getUTCDate();
-                var url = '/apps/dashboard/data.php?item=balance-sheet&account=' + myIntranetApps.insight.accountKey + '&asOf=' + newAsOf + ((forceRefresh === true)?'&refresh':'');
-                $.getJSON(url, function (data) {
-                    $('#balanceSheetTable tr td').html((data.balance_sheet == null) ? 'no data available' : data.balance_sheet);
-                });
-            }
-        };
-
-        $('#snapshotItems').append(snapshotItemContent( (typeof data.debt_asset_ratio === 'number' && isFinite(data.debt_asset_ratio))?(Math.round((data.debt_asset_ratio + Number.EPSILON) * 100) / 100):null, 'Debt/Asset', 'green'));
-        //$('#snapshotItems').append(snapshotItemContent( (typeof data.cash_ebitda === 'number' && isFinite(data.cash_ebitda))?(Math.round((data.cash_ebitda + Number.EPSILON) * 100) / 100):null, 'Cash/EBITDA', 'green'));
-        $('#snapshotItems').append(snapshotItemContent( (typeof data.current_ratio === 'number' && isFinite(data.current_ratio))?(Math.round((data.current_ratio + Number.EPSILON) * 100) / 100):null, 'Current Ratio', 'green'));
-        $('div.snapshotCard h6.card-subtitle').html('Data as of: '+data.asOf + ' ');
-
-        var content = '<div class="card">' +
-            '<div class="card-body">' +
-            '\n' +
-            '<div style="width:100%">\n' +
-            '            <div style="float:right;">\n' +
-            '                <input type="text" value="'+data.asOf+'" id="asOfBalanceSheet">\n' +
-            ' <button class="sync" id="syncBalanceSheet"><img src="/img/icons/sync.png"></button> ' +
-            '            </div>\n' +
-            '        </div>' +
-            '<h4 class="card-title">Balance Sheet</h4><span id=""></span><hr class="card-title-rule">\n' +
-            '<table class="insightTable" id="balanceSheetTable"><tr><td>' + ((data.balance_sheet == null) ? 'no data available' : data.balance_sheet) + '</td></tr></table>' +
-            '</div></div>';
-
-        $('#zone-center').append(content);
-
-        var optionsDateBalanceSheet = {
-            timepicker: false,
-            tabIndex: 0,
-            formatDate: 'YYYY-MM-DD',
-            formatDateTime: 'YYYY-MM-DD',
-            norange: true,
-            cells: [1, 3],
-            animation: false,
-            lang: "en",
-            clearButtonInButton: true,
-            todayButton:true,
-            onOkButtonClick:function(){
-                refreshBalanceSheet();
-            }
-        };
-        $('#asOfBalanceSheet').periodpicker(optionsDateBalanceSheet);
-        $('#syncBalanceSheet').on('click', function(){
-            refreshBalanceSheet(true);
-        });
-
-
-    });
-
-
-    myIntranetApps.fetchData({item: 'profit-loss'}, function (data) {
-
-        // START PROFIT LOSS REPORT
-        var refreshProfitLoss = function(forceRefresh){
-            var newPeriod = $('#startProfitLoss').periodpicker('value');
-            if(typeof newPeriod[0] == 'object' && typeof newPeriod[1] == 'object') {
-                var newStart = newPeriod[0].getUTCFullYear() + '-' + (newPeriod[0].getUTCMonth() + 1) + '-' + newPeriod[0].getUTCDate();
-                var newEnd = newPeriod[1].getUTCFullYear() + '-' + (newPeriod[1].getUTCMonth() + 1) + '-' + newPeriod[1].getUTCDate();
-                var url = '/apps/dashboard/data.php?item=profit-loss&account=' + myIntranetApps.insight.accountKey + '&start=' + newStart + '&end=' + newEnd + ((forceRefresh === true)?'&refresh':'');
-                $.getJSON(url, function (data) {
-                    $('#profitLossTable tr td').html((data.profit_loss == null) ? 'no data available' : data.profit_loss);
-                });
-            }
-        };
-
-        var contentProfitLoss = '<div class="card">' +
-            '<div class="card-body">' +
-            '\n' +
-            '<div style="width:100%">\n' +
-            '            <div style="float:right;">\n' +
-            '                <input type="text" value="'+data.start+'" id="startProfitLoss"><input type="text" value="'+data.end+'" id="endProfitLoss">\n' +
-            ' <button class="sync" id="syncProfitLoss"><img src="/img/icons/sync.png"></button> ' +
-            ' <button class="full" id="fullProfitLoss"><img src="/img/icons/full.png"></button> ' +
-            '            </div>\n' +
-            '        </div>' +
-            '<!--<p>Between: ' + data.start + ' and ' + data.end + ' </p>-->' +
-            '<h4 class="card-title">Profit and Loss</h4><hr class="card-title-rule"><table class="insightTable" id="profitLossTable"><tr><td>' + ((data.profit_loss == null) ? 'no data available' : data.profit_loss) + '</td></tr></table>' +
-            '</div></div>';
-
-        // generate list of accounts, with
-        //var balanceSeries = [];
-        var g,h,formatPrefix,formatPostfix;
-        var balanceSeries = Object.create(null);
-        for(g = 0; g < data.periods.length; g++)
-        {
-            for(h = 0; h < data.periods[g].details.length; h++)
-            {
-                if(typeof balanceSeries['id-'+data.periods[g].details[h].id] == 'undefined')
-                {
-                    balanceSeries['id-'+data.periods[g].details[h].id] = {name:data.periods[g].details[h].name, mapping:data.periods[g].details[h].mapping, row:Object.create(null)};
-
-                }
-                balanceSeries['id-'+data.periods[g].details[h].id].row['period-'+data.periods[g].start] = data.periods[g].details[h].value ;
-
-            }
-        }
-
-        // build data table
-        var fullProfitLossHTML = '<table id="profitLossMonthlyTable" class="hidden">';
-        fullProfitLossHTML += '<thead><tr><th>Account</th><th>Mapping</th>';
-
-        for(g = 0; g < data.periods.length; g++)
-        {
-            var monthName = moment(data.periods[g].start, 'YYYY-MM-DD').format('MMM YY');
-            fullProfitLossHTML += '<th class="period">'+monthName+'</th>';
-        }
-        fullProfitLossHTML += '</tr></thead><tbody>';
-
-        $.each(balanceSeries, function(index, value){
-            fullProfitLossHTML+='<tr><th>'+value.name+'</th><td>'+value.mapping+'</td>';
-
-            for(g = 0; g < data.periods.length; g++)
-            {
-                if(typeof value.row['period-'+data.periods[g].start] !== 'undefined')
-                {
-                    fullProfitLossHTML += '<td class="money">'+$.fn.dataTable.render.number(',', '.', 2).display(value.row['period-'+data.periods[g].start])+'</td>';
-                }else {
-                    fullProfitLossHTML += '<td class="money">0.00</td>';
-                }
-
-            }
-            fullProfitLossHTML+='</tr>';
-        });
-
-        fullProfitLossHTML += '</tbody>';
-        fullProfitLossHTML += '<tfoot><tr><th>Net Profit</th><th></th>';
-        for(g = 0; g < data.periods.length; g++)
-        {
-            formatPrefix = (data.periods[g].totals.profit < 0)?'(':'';
-            formatPostfix = (data.periods[g].totals.profit < 0)?')':'';
-            fullProfitLossHTML += '<th class="money">'+$.fn.dataTable.render.number(',', '.', 2, formatPrefix, formatPostfix).display( (data.periods[g].totals.profit<0)?-data.periods[g].totals.profit:data.periods[g].totals.profit )+'</th>';
-        }
-        fullProfitLossHTML += '</tr></tfoot>';
-        fullProfitLossHTML += '</table>';
-
-        $('#zone-right').append(contentProfitLoss + fullProfitLossHTML);
-
-        var optionsRangeProfitLoss = {
-            timepicker: false,
-            tabIndex: 0,
-            formatDate: 'YYYY-MM-DD',
-            formatDateTime: 'YYYY-MM-DD',
-            norange: false,
-            cells: [1, 3],
-            animation: false,
-            lang: "en",
-            clearButtonInButton: true,
-            todayButton:true,
-            end:'#endProfitLoss',
-            onOkButtonClick:function(){
-                refreshProfitLoss();
-            }
-        };
-        $('#startProfitLoss').periodpicker(optionsRangeProfitLoss);
-        $('#syncProfitLoss').on('click', function(){
-            refreshProfitLoss(true);
-        });
-        $('#fullProfitLoss').on('click', function(){
-            var profitLossTableHTML = '<table id="monthlyProfitLossModalTable" style="width:100%;">'+$('#profitLossMonthlyTable').html()+'</table>';
-
-            $('#contentModalContainer').html(profitLossTableHTML);
-            $('#contentModal .modal-title').html('Profit and Loss - Ending '+data.end);
-
-
-
-            $('#contentModal').modal({
-                backdrop: false,
-                keyboard: true,
-                show:true
-            });
-
-            var modalTableButtons = '<div class="dataTables_buttons hidden-sm-down actions">' +
-                '<span class="actions__item zmdi zmdi-print" data-table-action="print" title="Print" />' +
-                '<span class="actions__item zmdi zmdi-fullscreen" data-table-action="fullscreen" title="Full Screen" />' +
-                '<div class="dropdown actions__item">' +
-                '<i data-toggle="dropdown" class="zmdi zmdi-download" title="Download" />' +
-                '<ul class="dropdown-menu dropdown-menu-right">' +
-                '<a class="dropdown-item" data-table-action="excel">Excel (.xlsx)</a>' +
-                '<a class="dropdown-item" data-table-action="csv">CSV (.csv)</a>' +
-                '</ul>' +
-                '</div>' +
-                '</div>';
-
-            var modalTable = $('#monthlyProfitLossModalTable').DataTable({
-                dom: 'Blfrtip',
-
-                "initComplete": function (settings, json) {
-                    $(this).closest('.dataTables_wrapper').prepend(modalTableButtons);
-                },
-
-                paging:false,
-
-                searching:false,
-                info: false,
-                lengthMenu: false,
-                orderFixed: [1, 'desc'],
-                rowGroup: {
-                    dataSrc: 1,
-                    endRender: function ( rows, group ) {
-                        var numMonthCols = rows.nodes().data()[0].length - 2;
-                        var sumOfMonth = 0;
-                        var totalRowHTML = '<tr class="group"><th>Total '+group+'</th>';
-                        for(var g=0; g<numMonthCols; g++)
-                        {
-                            sumOfMonth = rows.data().pluck(g+2).reduce(function(a,b){return a + b.replace(/[^\d]/g, '')*1;},0) / 100;
-                            totalRowHTML += '<td class="money">'+$.fn.dataTable.render.number(',', '.', 2).display(sumOfMonth)+'</td>';
-                        }
-                        totalRowHTML += '</tr>';
-                        return $(totalRowHTML);
-                    },
-                },
-                "columnDefs": [
-                    {
-                        "targets": [ 1 ],
-                        "visible": false,
-                        "searchable": false
-                    }
-                ]
-            });
-            $('#monthlyProfitLossModalTable tbody')
-                .on( 'mouseenter', 'td', function () {
-                    var cellIdx = modalTable.cell(this).index();
-                    if(typeof cellIdx !== 'undefined')
-                    {
-                        var colIdx = cellIdx.column;
-
-                        $( modalTable.cells().nodes() ).removeClass( 'highlight' );
-                        $( modalTable.column( colIdx ).nodes() ).addClass( 'highlight' );
-                    }
-
-                } );
-
-
-        });
-        // END PROFIT LOSS REPORT
-
-    });
-    */
 
     myIntranetApps.fetchData({item: 'balance-sheet'}, function (data) {
 
@@ -597,11 +302,7 @@ $(document).ready(function () {
                 lengthMenu: false,
                 orderFixed: [1, 'desc'],
                 rowGroup: {
-                    dataSrc: 1,/*
-                    startRender: function(rows,group){
-                        return group+'!@!';
-                      //return '<tr><th>'+group+'!!</th><th colspan="'+(rows.nodes().data()[0].length-1)+'"></th></tr>';
-                    },*/
+                    dataSrc: 1,
                     endRender: function ( rows, group ) {
                         var numMonthCols = rows.nodes().data()[0].length - 2;
                         var sumOfMonth = 0;
@@ -663,7 +364,6 @@ $(document).ready(function () {
                                 class: 'custom-icon',
                                 click: function (chart, options, e) {
 
-                                    //console.log(myIntranetApps.insight.accountKey);
                                     chart.updateSeries([]);
                                     chart.clearAnnotations(); // @todo this is not clearning annotations set in the initial chart options
                                     var url = '/apps/dashboard/data.php?item=profit-loss&refresh&account='+myIntranetApps.insight.accountKey;
