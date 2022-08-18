@@ -12,9 +12,11 @@
         values: [
           {value: 'profit_loss', title: 'Profit and Loss'},
           {value: 'balance_sheet',title: 'Balance Sheet'},
+          /*{value: 'cash_flow', title:'Cash Flow Statement'},
+          {value: 'bank_balances',title: 'Bank Balances and Transactions'},*/
           {value: 'bank_transfer',title: 'Banking Transfer Information'},
           {value: 'irs_1120',title: 'IRS Business Tax Form 1120'},
-          {value: 'cra_t2',title: 'CRA T2 Corporation Income Tax Return'},
+//          {value: 'cra_t2',title: 'CRA T2 Corporation Income Tax Return'},
           {value: 'prepared_financials',title: 'Prepared Financial Statements'},
           {value: 'cash_flow_forecast', title: 'Cash Flow Forecast'}
         ],
@@ -28,6 +30,29 @@
           readHide: true
         }
       },
+      /*{
+        name: 'metrics-ratios',
+        title: 'Metrics / Ratios',
+        type: 'select',
+        multiple: true,
+        values: [
+          {value: 'financial-ratios', title: 'Financial Ratios (A/R, Gross Margin, Net Margin'},
+          {value: 'debt-ratios',title: 'Debt Ratios - DSCR, LTV'},
+          {value: 'sales-forecast', title:'Sales & Forecast'},
+
+          {value: 'ar-performance',title: 'A/R Performance'}
+        ],
+        access: {
+          read: [
+            'users'
+          ],
+          modify: [
+            'parent:::admins'
+          ],
+          readHide: true
+        }
+      },*/
+
       {
         name: 'company-legal-name',
         title: 'Company Legal Name',
@@ -51,26 +76,16 @@
       {
         name: 'website',
         title: 'Website',
-        type: 'url',
+        type: 'text',
         sync: {
           push: false,
           pull: false,
           entity: 'accounts',
           field: 'Website'
         },
-        access: {
-          read: [
-            'admins','underwriters','borrowers'
-          ],
-          modify: [
-            'admins','underwriters','borrowers'
-          ]
-        }
-      },
-      {
-        name: 'business-number',
-        title: 'CRA Business Number',
-        type: 'number',
+        attributes: {
+          placeholder: 'https://www.mycompany.com'
+        },
         access: {
           read: [
             'admins','underwriters','borrowers'
@@ -133,23 +148,6 @@
         }
       },
       {
-        name: 'cra-pd7a',
-        title: 'PD7A Statement of Account for Source Deductions',
-        type: 'file',
-        accept: '.pdf',
-        access: {
-          read: [
-            'admins','underwriters','borrowers'
-          ],
-          modify: [
-            'admins','underwriters','borrowers'
-          ]
-        },
-        visibility: {
-          contains: {field: 'info-statements', value: 'cra_pd7a'}
-        }
-      },
-      {
         name: 'notice-of-assessment',
         title: 'Notice of Assessment (previous 2 years)',
         type: 'file',
@@ -167,6 +165,20 @@
           contains: {field: 'info-statements', value: 'notice_of_assessment'}
         }
       },
+      /*
+      {
+        name: 'address',
+        title: 'Physical Address',
+        type: 'address',
+        access: {
+          read: [
+            'admins','underwriters','borrowers'
+          ],
+          modify: [
+            'admins','underwriters','borrowers'
+          ]
+        }
+      },*/
 
       /* BANK INFO START */
       {
@@ -455,10 +467,19 @@
       },
       /* FINANCIAL STATEMENTS END */
 
+
+
     ]
   },
 
   forms: {
+    /*
+    requirements: {
+      title: 'Required Information',
+      fields: [
+        {name: 'test-field'}
+      ]
+    },*/
     submit: {
       title: 'Submit Information',
       workflow_state: 'submitted',
@@ -473,6 +494,9 @@
           name: 'sign-name',
           title: 'Your Name',
           type: 'text',
+          attributes: {
+            required: true
+          },
           access: {
             read: [
               'admins',
@@ -490,6 +514,9 @@
           name: 'sign-title',
           title: 'Your Title/Role',
           type: 'text',
+          attributes: {
+            required: true
+          },
           access: {
             read: [
               'admins',
@@ -508,6 +535,9 @@
           title: 'I have completed all sections and certify the information is correct',
           description: 'Please type your full name to certify',
           type: 'signature',
+          attributes: {
+            required: true
+          },
           access: {
             read: [
               'admins',
@@ -530,26 +560,26 @@
   portfolio: {
     owners: [
       'admins',
-      'underwriters'
+      'managers',
+      'users'
     ],
     permissions: [
       {
         groups: [
-          'admins'
+          'admins',
+          'managers'
         ],
         access: {
           view: 'all',
-          edit: true,
-          add: true
+          edit: true
         }
       },
       {
         groups: [
-          'underwriters'
+          'users'
         ],
         access: {
-          view: 'own',
-          add: true
+          view: 'own'
         }
       }
     ],
@@ -558,6 +588,7 @@
       {name: 'company-legal-name', type: 'text', title: 'Company'},
       {name: 'business-number', type: 'text', title: 'Number'},
       {name: 'primary-contact', type: 'email', title: 'Contact'},
+      /*{name: '@months_liquidity', type: 'text', title: 'Liquidity'}*/
 
     ]
   },
@@ -565,12 +596,14 @@
     uniqueJoinField: 'company-legal-name',
     owners: [
       'admins',
-      'underwriters'
+      'managers',
+      'users'
     ],
     permissions: [
       {
         groups: [
-          'admins'
+          'admins',
+          'managers'
         ],
         access: {
           view: 'all',
@@ -579,11 +612,10 @@
       },
       {
         groups: [
-          'underwriters'
+          'users'
         ],
         access: {
-          view: 'own',
-          add: true
+          view: 'own'
         }
       }
     ],
@@ -609,7 +641,7 @@
           {value: 'bank_balances',title: 'Bank Balances and Transactions'},*/
           {value: 'bank_transfer',title: 'Banking Transfer Information'},
           {value: 'irs_1120',title: 'IRS Business Tax Form 1120'},
-          {value: 'cra_t2',title: 'CRA T2 Corporation Income Tax Return'},
+//          {value: 'cra_t2',title: 'CRA T2 Corporation Income Tax Return'},
           {value: 'prepared_financials',title: 'Accountant Prepared Financial Statements'},
           {value: 'cash_flow_forecast', title: 'Cash Flow Forecast'},
           {value: 'notice_of_assessment', title: 'Notice of Assessment (previous 2 years)'}, // previous 2 years
@@ -619,7 +651,20 @@
           {value: 'articles_of_incorporation', title: 'Articles of Incorporation'},
 
         ],
-      }
+      }/*,
+      {
+        name: 'metrics-ratios',
+        title: 'Metrics/Ratios/Analytics',
+        type: 'select',
+        multiple: true,
+        values: [
+          {value: 'financial-ratios', title: 'Financial Ratios (A/R, Gross Margin, Net Margin'},
+          {value: 'debt-ratios',title: 'Debt Ratios - DSCR, LTV'},
+          {value: 'sales-forecast', title:'Sales & Forecast'},
+          {value: 'ar-performance',title: 'A/R Performance'}
+        ],
+      }*/
+
     ],
     status: [
       // Pending workflow status
@@ -637,4 +682,10 @@
       }
     ]
   },
+
+  chart_of_accounts: {
+    mapping: [
+      {'name': '', type:  ''}
+    ]
+  }
 }

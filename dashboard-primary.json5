@@ -1,0 +1,21 @@
+{
+    profile: [
+        {title: "Company Legal Name", key: "company-legal-name"},
+        {title: "Website", key: "website"}
+    ],
+    metrics: [
+        "debt_asset_ratio",
+        "current_ratio",
+        "working_capital",
+    ],
+    // add key 'active': true to make the chosen tab the default one
+    // example: {id:"accounting", title: "Accounting", active: true}
+    tabs: [
+        {id:"accounting", title: "Accounting"},
+    ],
+    widgets: {
+//         Accounting Tab
+        "profit and loss": {column: "left"},
+        "balance sheet": {column: "right"},
+    },
+}
