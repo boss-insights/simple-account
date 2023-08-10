@@ -1,21 +1,93 @@
 {
-    profile: [
-        {title: "Company Legal Name", key: "company-legal-name"},
-        {title: "Website", key: "website"}
-    ],
-    metrics: [
-        "debt_asset_ratio",
-        "current_ratio",
-        "working_capital",
-    ],
-    // add key 'active': true to make the chosen tab the default one
-    // example: {id:"accounting", title: "Accounting", active: true}
-    tabs: [
-        {id:"accounting", title: "Accounting"},
-    ],
-    widgets: {
-//         Accounting Tab
-        "profit and loss": {column: "left"},
-        "balance sheet": {column: "right"},
-    },
+    "dashboards": [
+        {
+            "key": "profile",
+            "title": "Key Performance Indicators",
+            "cssClasses": {
+                "title": "mb-0 mt-0 no-shadow"
+            },
+            "hideTabs": 1,
+            "tabsets": [
+                {
+                    "id": "profile",
+                    "title": "KPI",
+                    "active": true,
+                    "icon": "square",
+                    "columns": [
+                        3,
+                        9
+                    ],
+                    "widgets": [
+                        {
+                            "key": "profile card",
+                            "column": "left",
+                            "no_box_shadow": true,
+                            "info": [
+                                {
+                                    "title": "Company Legal Name",
+                                    "key": "company-legal-name"
+                                },
+                                {
+                                    "title": "Website",
+                                    "key": "website"
+                                }
+                            ]
+                        },
+                        {
+                            "key": "metric cards",
+                            "column": "right",
+                            "no_box_shadow": true,
+                            "metrics": [
+                                "debt_asset_ratio",
+                                "current_ratio",
+                                "working_capital"
+                            ],
+                            "sparkLines": null,
+                            "customParams": null
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "key": "main-dashboard",
+            "cssClasses": {
+                "dashboard": "mt-2"
+            },
+            "tabsets": [
+                {
+                    "id": "requirements",
+                    "title": "Requirements",
+                    "columns": [
+                        12,
+                        0
+                    ],
+                    "widgets": [
+                        {
+                            "key": "requirements table"
+                        }
+                    ]
+                },
+                {
+                    "id": "accounting",
+                    "title": "Accounting",
+                    "columns": [
+                        6,
+                        6
+                    ],
+                    "icon": null,
+                    "widgets": [
+                        {
+                            "key": "profit and loss",
+                            "column": "left"
+                        },
+                        {
+                            "key": "balance sheet",
+                            "column": "right"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
 }
